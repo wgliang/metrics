@@ -17,14 +17,14 @@ type Flow interface {
 	Size() int64
 
 	// Return all the values in the flow.
-	Values() (values [][]byte)
+	Values() (values []string)
 
 	// right pop and push operation
-	RPop()	([]byte, error)
-	RPush([]byte)
+	RPop()	(string, error)
+	RPush(string)
 	// left pop and push operation
-	LPop()	([]byte, error)
-	LPush([]byte)
+	LPop()	(string, error)
+	LPush(string)
 }
 
 type flowData struct {
@@ -53,7 +53,7 @@ func NewFlow(size int64) Flow {
 }
 
 // Push data from right
-func (f *flowData) RPush(value []byte) {
+func (f *flowData) RPush(value string) {
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
 	f.values.PushFront(value)
@@ -74,7 +74,7 @@ func (f *flowData) RPush(value []byte) {
 }
 
 // Push data from left
-func (f *flowData) LPush(value []byte) {
+func (f *flowData) LPush(value string) {
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
 	f.values.PushBack(value)
@@ -95,37 +95,37 @@ func (f *flowData) LPush(value []byte) {
 }
 
 // get all values in list
-func (f *flowData) Values() (values [][]byte){
+func (f *flowData) Values() (values []string){
 	for iter := f.values.Front(); iter != nil ;iter = iter.Next() {
-    	values =  append(values,(iter.Value).([]byte))
+    	values =  append(values,(iter.Value).(string))
 	}
 	return values
 }
 
 // pop data from left
-func (f *flowData) LPop() ([]byte, error) {
+func (f *flowData) LPop() (string, error) {
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
 	ele := f.values.Back()
 	if ele == nil {
-		return []byte{}, errors.New("flow: null list")
+		return "", errors.New("flow: null list")
 	}
 	f.values.Remove(ele)
 	f.Length -= 1
-	return ele.Value.([]byte), nil
+	return ele.Value.(string), nil
 }
 
 //pop data from right
-func (f *flowData) RPop() ([]byte, error) {
+func (f *flowData) RPop() (string, error) {
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
 	ele := f.values.Front()
 	if ele == nil {
-		return []byte{}, errors.New("flow: null list")
+		return "", errors.New("flow: null list")
 	}
 	f.values.Remove(ele)
 	f.Length -= 1
-	return ele.Value.([]byte), nil
+	return ele.Value.(string), nil
 }
 
 // get current size
