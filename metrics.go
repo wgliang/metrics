@@ -11,8 +11,7 @@ import (
 	"github.com/google/glog"
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"
-
-	metricslib "../../metrics/metrics-lib"
+	metricslib "github.com/wgliang/metrics/metrics-lib"
 )
 
 // metrics-data options
@@ -23,7 +22,7 @@ type Options struct {
 }
 
 // metrics-data struct
-type DMetrics struct {
+type Metrics struct {
 	mutex   sync.RWMutex
 	Metrics map[string]interface{}
 	Path    string
@@ -31,7 +30,7 @@ type DMetrics struct {
 }
 
 // init metrics-data colloctor
-func InitDMetrics(me *DMetrics) {
+func InitMetrics(me *Metrics) {
 	mux := mux.NewRouter()
 	me.RegHandler(mux)
 
@@ -47,21 +46,21 @@ func InitDMetrics(me *DMetrics) {
 
 }
 
-func NewDMetrics(option *Options) *DMetrics {
+func NewMetrics(option *Options) *Metrics {
 	glog.V(5).Infoln(` New a metrics... `)
-	me := new(DMetrics)
+	me := new(Metrics)
 	me.Metrics = make(map[string]interface{})
 	me.Path = option.Path
 	me.Addr = option.Addr
 
 	if option.Switcher == 1 {
-		InitDMetrics(me)
+		InitMetrics(me)
 	}
 	return me
 }
 
 // register Metrics
-func (me *DMetrics) RegMetric(name string, metric interface{}) interface{} {
+func (me *Metrics) RegMetric(name string, metric interface{}) interface{} {
 	glog.V(5).Infoln(name, ` Regist metrics... `)
 	me.mutex.Lock()
 	defer me.mutex.Unlock()
@@ -74,17 +73,17 @@ func (me *DMetrics) RegMetric(name string, metric interface{}) interface{} {
 }
 
 // register route
-func (me *DMetrics) RegHandler(mux *mux.Router) {
+func (me *Metrics) RegHandler(mux *mux.Router) {
 	mux.HandleFunc("/api/metrics/metrics/{action}", me.MetricsResponse)
 }
 
 // Metrics数据解析响应
-func (me *DMetrics) MetricsResponse(w http.ResponseWriter, req *http.Request) {
+func (me *Metrics) MetricsResponse(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	metricName := vars["action"]
 	glog.V(5).Infoln(metricName, ` action response... `)
 
-	res, err := me.metrics2string(metricName)
+	res, err := me.Metrics2string(metricName)
 	if err != nil {
 		glog.V(5).Infoln(err)
 	}
@@ -92,7 +91,7 @@ func (me *DMetrics) MetricsResponse(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte(res))
 }
 
-func (me *DMetrics) metrics2string(metricName string) (string, error) {
+func (me *Metrics) Metrics2string(metricName string) (string, error) {
 	var res string
 	switch value := me.Metrics[metricName]; vtype := me.Metrics[metricName].(type) {
 	case metricslib.Counter:
@@ -155,12 +154,12 @@ func metrics2json(t reflect.Type, v reflect.Value) string {
 					}
 					data[t.Method(i).Name] = sli
 				}
-			case []([]byte):
+			case []string:
 				{
 					var sli []string
-					peres := v.Method(i).Call([]reflect.Value{})[0].Interface().([][]byte)
+					peres := v.Method(i).Call([]reflect.Value{})[0].Interface().([]string)
 					for index := 0; index < len(peres); index++ {
-						sli = append(sli, string(peres[index][0:len(peres[index])]))
+						sli = append(sli, peres[index])
 					}
 					data[t.Method(i).Name] = sli
 				}
