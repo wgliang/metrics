@@ -26,11 +26,19 @@ type Histogram interface {
 
 	// Return an arbitrary percentile of all values seen since the histogram was
 	// last cleared.
-	Percentile(p float64) float64
+	Percentile() float64
+
+	// Return an arbitrary percentile of all values seen since the histogram was
+	// last cleared.
+	percentile(p float64) float64
 
 	// Return a slice of arbitrary percentiles of all values seen since the
 	// histogram was last cleared.
-	Percentiles(ps []float64) []float64
+	Percentiles() []float64
+
+	// Return a slice of arbitrary percentiles of all values seen since the
+	// histogram was last cleared.
+	percentiles(ps []float64) []float64
 
 	// Return the standard deviation of all values seen since the histogram was
 	// last cleared.
@@ -106,11 +114,15 @@ func (h *histogram) Min() int64 {
 	return h.min
 }
 
-func (h *histogram) Percentile(p float64) float64 {
-	return h.Percentiles([]float64{p})[0]
+func (h *histogram) Percentile() float64 {
+	return h.percentiles([]float64{0.5})[0]
 }
 
-func (h *histogram) Percentiles(ps []float64) []float64 {
+func (h *histogram) percentile(p float64) float64 {
+	return h.percentiles([]float64{p})[0]
+}
+
+func (h *histogram) percentiles(ps []float64) []float64 {
 	scores := make([]float64, len(ps))
 	values := int64Slice(h.s.Values())
 	size := len(values)
@@ -130,6 +142,10 @@ func (h *histogram) Percentiles(ps []float64) []float64 {
 		}
 	}
 	return scores
+}
+
+func (h *histogram) Percentiles() []float64 {
+	return h.percentiles([]float64{0.5, 0.75, 0.9})
 }
 
 func (h *histogram) StdDev() float64 {

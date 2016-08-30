@@ -6,7 +6,7 @@ import (
 )
 
 func TestPlain(t *testing.T) {
-	m := NewString()
+	m := NewMString()
 	fmt.Println(m.Value())
 	m.Update("sklar")
 	fmt.Println(m.Value())

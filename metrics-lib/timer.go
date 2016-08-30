@@ -17,10 +17,10 @@ type Timer interface {
 	Min() int64
 
 	// Return an arbitrary percentile of all values seen.
-	Percentile(p float64) float64
+	Percentile() float64
 
 	// Return a slice of arbitrary percentiles of all values seen.
-	Percentiles(ps []float64) []float64
+	Percentiles() []float64
 
 	// Return the meter's one-minute moving average rate of events.
 	Rate1() float64
@@ -101,12 +101,12 @@ func (t *timer) Min() int64 {
 	return t.h.Min()
 }
 
-func (t *timer) Percentile(p float64) float64 {
-	return t.h.Percentile(p)
+func (t *timer) Percentile() float64 {
+	return t.h.Percentile()
 }
 
-func (t *timer) Percentiles(ps []float64) []float64 {
-	return t.h.Percentiles(ps)
+func (t *timer) Percentiles() []float64 {
+	return t.h.Percentiles()
 }
 
 func (t *timer) Rate1() float64 {

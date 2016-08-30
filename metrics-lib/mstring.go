@@ -20,7 +20,7 @@ type mstring struct {
 }
 
 // Create a new mstring.
-func NewMstring() Mstring {
+func NewMString() Mstring {
 	return &mstring{value: ""}
 }
 

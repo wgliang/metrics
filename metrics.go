@@ -78,19 +78,6 @@ func (me *DMetrics) RegHandler(mux *mux.Router) {
 	mux.HandleFunc("/api/metrics/metrics/{action}", me.MetricsResponse)
 }
 
-func (me *DMetrics) SyncRedisCron() {
-	for key, value := range me.Metrics {
-		res, err := me.metrics2string(key)
-		if err != nil {
-			glog.V(5).Infoln(err)
-		} else if res == "" {
-			glog.V(5).Infoln("value is nil")
-		} else {
-
-		}
-	}
-}
-
 // Metrics数据解析响应
 func (me *DMetrics) MetricsResponse(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	metrics "../../metrics/metrics"
+	metrics "../../metrics"
 	metricslib "../../metrics/metrics-lib"
 	"github.com/pelletier/go-toml"
 )
