@@ -1,5 +1,8 @@
 # Metrics
 
+[![GoDoc](https://godoc.org/github.com/wgliang/metrics?status.svg)](https://godoc.org/github.com/wgliang/metrics)
+[![Go Report Card](https://goreportcard.com/badge/github.com/wgliang/metrics)](https://goreportcard.com/report/github.com/wgliang/metrics)
+
 forked from https://github.com/facebookgo/metrics and added some useful types
 
 
