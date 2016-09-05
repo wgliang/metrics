@@ -5,27 +5,26 @@ import (
 	"time"
 
 	metrics "github.com/wgliang/metrics"
-	metricslib "github.com/wgliang/metrics/metrics-lib"
 )
 
 func Module1(ms *metrics.Metrics) {
 	m1 := make(map[string]interface{})
-	m1["module1_counter"] = ms.RegMetric("module1_counter", metricslib.NewCounter())
-	m1["module1_action"] = ms.RegMetric("module1_action", metricslib.NewFlow(50))
+	m1["module1_counter"] = ms.RegMetric("module1_counter", metrics.NewCounter())
+	m1["module1_action"] = ms.RegMetric("module1_action", metrics.NewFlow(50))
 	for i := 0; i < 3; i++ {
-		m1["module1_counter"].(metricslib.Counter).Inc(1)
-		m1["module1_action"].(metricslib.Flow).RPush(` has been added to venuscron. `)
+		m1["module1_counter"].(metrics.Counter).Inc(1)
+		m1["module1_action"].(metrics.Flow).RPush(` has been added to venuscron. `)
 		// time.Sleep(3 * time.Second)
 	}
 }
 
 func Module2(ms *metrics.Metrics) {
 	m2 := make(map[string]interface{})
-	m2["module2_counter"] = ms.RegMetric("module2_counter", metricslib.NewCounter())
-	m2["module2_action"] = ms.RegMetric("module2_action", metricslib.NewFlow(50))
+	m2["module2_counter"] = ms.RegMetric("module2_counter", metrics.NewCounter())
+	m2["module2_action"] = ms.RegMetric("module2_action", metrics.NewFlow(50))
 	for i := 0; i < 3; i++ {
-		m2["module2_counter"].(metricslib.Counter).Inc(1)
-		m2["module2_action"].(metricslib.Flow).RPush(` has been added to venuscron. `)
+		m2["module2_counter"].(metrics.Counter).Inc(1)
+		m2["module2_action"].(metrics.Flow).RPush(` has been added to venuscron. `)
 		// time.Sleep(3 * time.Second)
 	}
 }

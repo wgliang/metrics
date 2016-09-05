@@ -2,6 +2,7 @@
 
 [![Go Report Card](https://travis-ci.org/wgliang/metrics.svg?branch=master)](https://travis-ci.org/wgliang/metrics)
 [![GoDoc](https://godoc.org/github.com/wgliang/metrics?status.svg)](https://godoc.org/github.com/wgliang/metrics)
+[![codecov](https://codecov.io/gh/wgliang/metrics/branch/master/graph/badge.svg)](https://codecov.io/gh/wgliang/metrics)
 [![Go Report Card](https://goreportcard.com/badge/github.com/wgliang/metrics)](https://goreportcard.com/report/github.com/wgliang/metrics)
 
 forked from https://github.com/facebookgo/metrics and added some useful types

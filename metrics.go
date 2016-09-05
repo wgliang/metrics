@@ -11,7 +11,6 @@ import (
 	"github.com/golang/glog"
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"
-	metricslib "github.com/wgliang/metrics/metrics-lib"
 )
 
 // metrics-data options
@@ -94,24 +93,24 @@ func (me *Metrics) MetricsResponse(w http.ResponseWriter, req *http.Request) {
 func (me *Metrics) Metrics2string(metricName string) (string, error) {
 	var res string
 	switch value := me.Metrics[metricName]; vtype := me.Metrics[metricName].(type) {
-	case metricslib.Counter:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Counter)), reflect.ValueOf(value.(metricslib.Counter)))
-	case metricslib.Gauge:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Gauge)), reflect.ValueOf(value.(metricslib.Gauge)))
-	case metricslib.EWMA:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.EWMA)), reflect.ValueOf(value.(metricslib.EWMA)))
-	case metricslib.Mstring:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Mstring)), reflect.ValueOf(value.(metricslib.Mstring)))
-	case metricslib.Timer:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Timer)), reflect.ValueOf(value.(metricslib.Timer)))
-	case metricslib.Sample:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Sample)), reflect.ValueOf(value.(metricslib.Sample)))
-	case metricslib.Histogram:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Histogram)), reflect.ValueOf(value.(metricslib.Histogram)))
-	case metricslib.Meter:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Meter)), reflect.ValueOf(value.(metricslib.Meter)))
-	case metricslib.Flow:
-		res = metrics2json(reflect.TypeOf(value.(metricslib.Flow)), reflect.ValueOf(value.(metricslib.Flow)))
+	case Counter:
+		res = metrics2json(reflect.TypeOf(value.(Counter)), reflect.ValueOf(value.(Counter)))
+	case Gauge:
+		res = metrics2json(reflect.TypeOf(value.(Gauge)), reflect.ValueOf(value.(Gauge)))
+	case EWMA:
+		res = metrics2json(reflect.TypeOf(value.(EWMA)), reflect.ValueOf(value.(EWMA)))
+	case Mstring:
+		res = metrics2json(reflect.TypeOf(value.(Mstring)), reflect.ValueOf(value.(Mstring)))
+	case Timer:
+		res = metrics2json(reflect.TypeOf(value.(Timer)), reflect.ValueOf(value.(Timer)))
+	case Sample:
+		res = metrics2json(reflect.TypeOf(value.(Sample)), reflect.ValueOf(value.(Sample)))
+	case Histogram:
+		res = metrics2json(reflect.TypeOf(value.(Histogram)), reflect.ValueOf(value.(Histogram)))
+	case Meter:
+		res = metrics2json(reflect.TypeOf(value.(Meter)), reflect.ValueOf(value.(Meter)))
+	case Flow:
+		res = metrics2json(reflect.TypeOf(value.(Flow)), reflect.ValueOf(value.(Flow)))
 	default:
 		{
 			strs, err := json.Marshal(struct {

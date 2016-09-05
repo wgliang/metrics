@@ -11,4 +11,7 @@ go:
 
 script:
   - go vet ./...
-  - go test -v ./metrics-lib/...
+  - go test -v -coverprofile=coverage.txt -covermode=atomic
+  
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
