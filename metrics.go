@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/google/glog"
+	"github.com/golang/glog"
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"
 	metricslib "github.com/wgliang/metrics/metrics-lib"
