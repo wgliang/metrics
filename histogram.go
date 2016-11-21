@@ -145,7 +145,7 @@ func (h *histogram) percentiles(ps []float64) []float64 {
 }
 
 func (h *histogram) Percentiles() []float64 {
-	return h.percentiles([]float64{0.5, 0.75, 0.9})
+	return h.percentiles([]float64{0.75, 0.95, 0.99})
 }
 
 func (h *histogram) StdDev() float64 {
