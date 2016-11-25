@@ -28,7 +28,7 @@ func TestEmptyHistogram(t *testing.T) {
 	if stdDev := h.StdDev(); 0.0 != stdDev {
 		t.Errorf("h.StdDev(): 0.0 != %v\n", stdDev)
 	}
-	ps := h.Percentiles()
+	ps := h.Percentiles([]float64{0.5, 0.75, 0.99})
 	if 0.0 != ps[0] {
 		t.Errorf("median: 0.0 != %v\n", ps[0])
 	}
@@ -60,14 +60,14 @@ func TestHistogram10000(t *testing.T) {
 	if stdDev := h.StdDev(); 2886.8956799071675 != stdDev {
 		t.Errorf("h.StdDev(): 2886.8956799071675 != %v\n", stdDev)
 	}
-	ps := h.Percentiles()
-	if 5000.5 != ps[0] {
+	ps := h.Percentiles([]float64{0.5, 0.75, 0.99})
+	if 5000.5-ps[0] > 0.0001 || 5000.5-ps[0] < -0.0001 {
 		t.Errorf("median: 5000.5 != %v\n", ps[0])
 	}
-	if 7500.75 != ps[1] {
+	if 7500.75-ps[1] > 0.0001 || 7500.75-ps[1] < -0.0001 {
 		t.Errorf("75th percentile: 7500.75 != %v\n", ps[1])
 	}
-	if 9000.9 != ps[2] {
+	if 9900.99-ps[2] > 0.001 || 9900.99-ps[2] < -0.001 {
 		t.Errorf("99th percentile: 9900.99 != %v\n", ps[2])
 	}
 }

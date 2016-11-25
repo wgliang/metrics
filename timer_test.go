@@ -23,7 +23,7 @@ func TestTimerZero(t *testing.T) {
 	if stdDev := tm.StdDev(); 0.0 != stdDev {
 		t.Errorf("tm.StdDev(): 0.0 != %v\n", stdDev)
 	}
-	ps := tm.Percentiles()
+	ps := tm.Percentiles([]float64{0.5, 0.75, 0.99})
 	if 0.0 != ps[0] {
 		t.Errorf("median: 0.0 != %v\n", ps[0])
 	}

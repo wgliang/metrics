@@ -301,7 +301,7 @@ func (r *StandardCollectry) Values() interface{} {
 			values["rate.15min"] = metric.Rate15()
 		case Histogram:
 			// h := metric.Snapshot()
-			ps := metric.Percentiles()
+			ps := metric.Percentiles([]float64{0.5, 0.75, 0.99})
 			values["min"] = metric.Min()
 			values["max"] = metric.Max()
 			values["mean"] = metric.Mean()
@@ -310,7 +310,7 @@ func (r *StandardCollectry) Values() interface{} {
 			values["99th"] = ps[2]
 		case Timer:
 			// t := metric.Snapshot()
-			ps := metric.Percentiles()
+			ps := metric.Percentiles([]float64{0.5, 0.75, 0.99})
 			values["min"] = metric.Min()
 			values["max"] = metric.Max()
 			values["mean"] = metric.Mean()
