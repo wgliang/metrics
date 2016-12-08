@@ -2,13 +2,13 @@ package metrics
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"path/filepath"
 	"reflect"
 	"strconv"
 	"sync"
 
-	"github.com/golang/glog"
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"
 )
@@ -37,7 +37,7 @@ func InitMetrics(me *Metrics) {
 	selfDir, _ := filepath.Abs(me.Path)
 	n.Use(negroni.NewStatic(http.Dir(selfDir)))
 	n.UseHandler(mux)
-	glog.V(5).Infoln(` metrics strating... `)
+	log.Println(` metrics strating... `)
 	//start http server
 	go func(serverAddr string) {
 		n.Run(serverAddr)
@@ -46,7 +46,7 @@ func InitMetrics(me *Metrics) {
 }
 
 func NewMetrics(option *Options) *Metrics {
-	glog.V(5).Infoln(` New a metrics... `)
+	log.Println(` New a metrics... `)
 	me := new(Metrics)
 	me.Metrics = make(map[string]interface{})
 	me.Path = option.Path
@@ -60,12 +60,12 @@ func NewMetrics(option *Options) *Metrics {
 
 // register Metrics
 func (me *Metrics) RegMetric(name string, metric interface{}) interface{} {
-	glog.V(5).Infoln(name, ` Regist metrics... `)
+	log.Println(name, ` Regist metrics... `)
 	me.mutex.Lock()
 	defer me.mutex.Unlock()
 	if _, ok := me.Metrics[name]; ok {
 		//已经存在，命名冲突啦
-		glog.V(5).Infoln(name, ` RegMetric error: name comflict... `)
+		log.Println(name, ` RegMetric error: name comflict... `)
 	}
 	me.Metrics[name] = metric
 	return metric
@@ -80,11 +80,11 @@ func (me *Metrics) RegHandler(mux *mux.Router) {
 func (me *Metrics) MetricsResponse(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	metricName := vars["action"]
-	glog.V(5).Infoln(metricName, ` action response... `)
+	log.Println(metricName, ` action response... `)
 
 	res, err := me.Metrics2string(metricName)
 	if err != nil {
-		glog.V(5).Infoln(err)
+		log.Println(err)
 	}
 
 	w.Write([]byte(res))
@@ -119,7 +119,7 @@ func (me *Metrics) Metrics2string(metricName string) (string, error) {
 			if err != nil {
 				return "", err
 			}
-			glog.V(5).Infoln(vtype)
+			log.Println(vtype)
 			res = string(strs)
 		}
 	}
@@ -170,7 +170,7 @@ func metrics2json(t reflect.Type, v reflect.Value) string {
 
 	strs, err := json.Marshal(data)
 	if err != nil {
-		glog.V(5).Infoln(err)
+		log.Println(err)
 	}
 	return string(strs)
 }
